@@ -1,6 +1,6 @@
 var ClientRequest = require('./lib/request')
 var response = require('./lib/response')
-var statusCodes = require('builtin-status-codes')
+var statusCodes = require('./lib/status-codes')
 var url = require('url')
 
 var http = exports
