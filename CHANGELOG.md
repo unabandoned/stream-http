@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.3.2](https://github.com/unabandoned/stream-http/compare/stream-http-v3.3.1...stream-http-v3.3.2) (2026-08-14)
+
+
+### Dependencies & maintenance
+
+* add .unabandoned.yml dashboard metadata ([#7](https://github.com/unabandoned/stream-http/issues/7)) ([5400fa3](https://github.com/unabandoned/stream-http/commit/5400fa32b9a9b9e573076a5fe1e103f840fc2a42))
+* **deps:** update unabandoned/.github digest to 461710f ([#9](https://github.com/unabandoned/stream-http/issues/9)) ([32b9bab](https://github.com/unabandoned/stream-http/commit/32b9bab4c591531474a8bfe99f94d39e286b3fb8))
+* vendor builtin-status-codes to drop the abandoned dependency ([#10](https://github.com/unabandoned/stream-http/issues/10)) ([db32c00](https://github.com/unabandoned/stream-http/commit/db32c0098f7000656b2577422742ab1bb10d7bb7))
+
 ## [3.3.1](https://github.com/unabandoned/stream-http/compare/stream-http-v3.3.0...stream-http-v3.3.1) (2026-08-14)
 
 
