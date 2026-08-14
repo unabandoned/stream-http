@@ -1,6 +1,5 @@
 var ClientRequest = require('./lib/request')
 var response = require('./lib/response')
-var extend = require('xtend')
 var statusCodes = require('builtin-status-codes')
 var url = require('url')
 
@@ -10,7 +9,7 @@ http.request = function (opts, cb) {
 	if (typeof opts === 'string')
 		opts = url.parse(opts)
 	else
-		opts = extend(opts)
+		opts = Object.assign({}, opts)
 
 	// Normally, the page is loaded from http or https, so not specifying a protocol
 	// will result in a (valid) protocol-relative url. However, this won't work if

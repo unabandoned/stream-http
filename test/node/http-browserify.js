@@ -1,6 +1,7 @@
 // These tests are taken from http-browserify to ensure compatibility with
 // that module
-var test = require('tape')
+var test = require('node:test')
+var assert = require('node:assert')
 var url = require('url')
 
 var location = 'http://localhost:8081/foo/123'
@@ -10,38 +11,41 @@ global.location = url.parse(location)
 global.XMLHttpRequest = function() {
 	this.open = noop
 	this.send = noop
+	this.abort = noop
+	this.setRequestHeader = noop
 	this.withCredentials = false
 }
+// These tests simulate an XHR-based browser and mock only XMLHttpRequest.
+// Modern Node exposes a global `fetch`, which stream-http would otherwise
+// prefer; clear it so the XHR code path (the one these mocks cover) is used.
+global.fetch = undefined
 
 var moduleName = require.resolve('../../')
 delete require.cache[moduleName]
 var http = require('../../')
 
-test('Make sure http object has correct properties', function (t) {
-	t.ok(http.Agent, 'Agent defined')
-	t.ok(http.ClientRequest, 'ClientRequest defined')
-	t.ok(http.ClientRequest.prototype, 'ClientRequest.prototype defined')
-	t.ok(http.IncomingMessage, 'IncomingMessage defined')
-	t.ok(http.IncomingMessage.prototype, 'IncomingMessage.prototype defined')
-	t.ok(http.METHODS, 'METHODS defined')
-	t.ok(http.STATUS_CODES, 'STATUS_CODES defined')
-	t.ok(http.get, 'get defined')
-	t.ok(http.globalAgent, 'globalAgent defined')
-	t.ok(http.request, 'request defined')
-	t.end()
+test('Make sure http object has correct properties', function () {
+	assert.ok(http.Agent, 'Agent defined')
+	assert.ok(http.ClientRequest, 'ClientRequest defined')
+	assert.ok(http.ClientRequest.prototype, 'ClientRequest.prototype defined')
+	assert.ok(http.IncomingMessage, 'IncomingMessage defined')
+	assert.ok(http.IncomingMessage.prototype, 'IncomingMessage.prototype defined')
+	assert.ok(http.METHODS, 'METHODS defined')
+	assert.ok(http.STATUS_CODES, 'STATUS_CODES defined')
+	assert.ok(http.get, 'get defined')
+	assert.ok(http.globalAgent, 'globalAgent defined')
+	assert.ok(http.request, 'request defined')
 })
 
-test('Test simple url string', function(t) {
+test('Test simple url string', function() {
 	var testUrl = { path: '/api/foo' }
 	var request = http.get(testUrl, noop)
 
 	var resolved = url.resolve(location, request._opts.url)
-	t.equal(resolved, 'http://localhost:8081/api/foo', 'Url should be correct')
-	t.end()
-
+	assert.strictEqual(resolved, 'http://localhost:8081/api/foo', 'Url should be correct')
 })
 
-test('Test full url object', function(t) {
+test('Test full url object', function() {
 	var testUrl = {
 		host: "localhost:8081",
 		hostname: "localhost",
@@ -59,11 +63,10 @@ test('Test full url object', function(t) {
 	var request = http.get(testUrl, noop)
 
 	var resolved = url.resolve(location, request._opts.url)
-	t.equal(resolved, 'http://localhost:8081/api/foo?bar=baz', 'Url should be correct')
-	t.end()
+	assert.strictEqual(resolved, 'http://localhost:8081/api/foo?bar=baz', 'Url should be correct')
 })
 
-test('Test alt protocol', function(t) {
+test('Test alt protocol', function() {
 	var params = {
 		protocol: "foo:",
 		hostname: "localhost",
@@ -74,11 +77,10 @@ test('Test alt protocol', function(t) {
 	var request = http.get(params, noop)
 
 	var resolved = url.resolve(location, request._opts.url)
-	t.equal(resolved, 'foo://localhost:3000/bar', 'Url should be correct')
-	t.end()
+	assert.strictEqual(resolved, 'foo://localhost:3000/bar', 'Url should be correct')
 })
 
-test('Test page with \'file:\' protocol', function (t) {
+test('Test page with \'file:\' protocol', function () {
 	var params = {
 		hostname: 'localhost',
 		port: 3000,
@@ -93,55 +95,61 @@ test('Test page with \'file:\' protocol', function (t) {
 	global.location = normalLocation // Reset the location
 
 	var resolved = url.resolve(fileLocation, request._opts.url)
-	t.equal(resolved, 'http://localhost:3000/bar', 'Url should be correct')
-	t.end()
+	assert.strictEqual(resolved, 'http://localhost:3000/bar', 'Url should be correct')
 })
 
-test('Test string as parameters', function(t) {
+test('Test string as parameters', function() {
 	var testUrl = '/api/foo'
 	var request = http.get(testUrl, noop)
 
 	var resolved = url.resolve(location, request._opts.url)
-	t.equal(resolved, 'http://localhost:8081/api/foo', 'Url should be correct')
-	t.end()
+	assert.strictEqual(resolved, 'http://localhost:8081/api/foo', 'Url should be correct')
 })
 
-test('Test withCredentials param', function(t) {
-	var url = '/api/foo'
+test('Test withCredentials param', async function() {
+	var reqUrl = '/api/foo'
 
-	var request = http.get({ url: url, withCredentials: false }, noop)
-	t.equal(request._xhr.withCredentials, false, 'xhr.withCredentials should be false')
+	// The XHR is created in _onFinish, which runs on the async 'finish' event,
+	// so wait for it before inspecting request._xhr.
+	function withCredentialsOf(opts) {
+		return new Promise(function (resolve) {
+			var request = http.get(opts, noop)
+			request.on('finish', function () {
+				resolve(request._xhr.withCredentials)
+			})
+		})
+	}
 
-	var request = http.get({ url: url, withCredentials: true }, noop)
-	t.equal(request._xhr.withCredentials, true, 'xhr.withCredentials should be true')
-
-	var request = http.get({ url: url }, noop)
-	t.equal(request._xhr.withCredentials, false, 'xhr.withCredentials should be false')
-
-	t.end()
+	assert.strictEqual(await withCredentialsOf({ url: reqUrl, withCredentials: false }), false,
+		'xhr.withCredentials should be false')
+	assert.strictEqual(await withCredentialsOf({ url: reqUrl, withCredentials: true }), true,
+		'xhr.withCredentials should be true')
+	assert.strictEqual(await withCredentialsOf({ url: reqUrl }), false,
+		'xhr.withCredentials should be false')
 })
 
-test('Test ipv6 address', function(t) {
+test('Test ipv6 address', function() {
 	var testUrl = 'http://[::1]:80/foo'
 	var request = http.get(testUrl, noop)
 
 	var resolved = url.resolve(location, request._opts.url)
-	t.equal(resolved, 'http://[::1]:80/foo', 'Url should be correct')
-	t.end()
+	assert.strictEqual(resolved, 'http://[::1]:80/foo', 'Url should be correct')
 })
 
-test('Test relative path in url', function(t) {
+test('Test relative path in url', function() {
 	var params = { path: './bar' }
 	var request = http.get(params, noop)
 
 	var resolved = url.resolve(location, request._opts.url)
-	t.equal(resolved, 'http://localhost:8081/foo/bar', 'Url should be correct')
-	t.end()
+	assert.strictEqual(resolved, 'http://localhost:8081/foo/bar', 'Url should be correct')
 })
 
-test('Cleanup', function (t) {
-	delete global.location
-	delete global.XMLHttpRequest
+test('Cleanup', function () {
+	// Leave global.location / global.XMLHttpRequest in place: the request-building
+	// tests above call http.get(), whose _onFinish runs asynchronously (on the
+	// stream's 'finish' tick) and may construct an XMLHttpRequest after the test
+	// that scheduled it has already returned. Removing the globals here would make
+	// that late construction throw. The process exits right after, so no reset is
+	// needed.
 	delete require.cache[moduleName]
-	t.end()
 })
