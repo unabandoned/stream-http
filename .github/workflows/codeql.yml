@@ -1,0 +1,14 @@
+name: CodeQL
+on:
+  push:
+    branches: [master]
+  pull_request:
+  schedule:
+    - cron: '0 6 * * 1'
+jobs:
+  codeql:
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    uses: unabandoned/.github/.github/workflows/reusable-codeql.yml@9f2cc43e37cb37150eff4c63664bd009c8ae6342 # main
