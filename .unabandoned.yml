@@ -1,0 +1,20 @@
+schema: 1
+
+package: "@unabandoned/stream-http"
+
+upstream:
+  repo: jhiesey/stream-http
+  reason: "unmaintained upstream — no new releases in years while its dependency tree ages"
+
+summary: >-
+  Streaming HTTP request implementation for the browser, backing Node's `http`
+  API on top of XHR/fetch so bundled code can make requests.
+
+why-forked: >-
+  A browserify HTTP shim that went unmaintained while its tree aged; forked so
+  Renovate keeps that tree current for the consumers that pull it in
+  transitively.
+
+status: active
+
+tags: [browser, http, stream, node-core-polyfill, browserify]
