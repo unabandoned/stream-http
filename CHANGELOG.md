@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.3.1](https://github.com/unabandoned/stream-http/compare/stream-http-v3.3.0...stream-http-v3.3.1) (2026-08-14)
+
+
+### Dependencies & maintenance
+
+* **deps:** pin dependencies ([#3](https://github.com/unabandoned/stream-http/issues/3)) ([1f2ce6b](https://github.com/unabandoned/stream-http/commit/1f2ce6b1a0343f5a92171eb2b2d6b76857d0c165))
+* **deps:** update unabandoned/.github digest to 88ce617 ([#4](https://github.com/unabandoned/stream-http/issues/4)) ([8bbee43](https://github.com/unabandoned/stream-http/commit/8bbee4382f25c6264c34c58552d8183c2bcf24c4))
+
 ## [3.3.0](https://github.com/unabandoned/stream-http/compare/stream-http-v3.2.0...stream-http-v3.3.0) (2026-08-14)
 
 
