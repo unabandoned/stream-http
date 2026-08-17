@@ -1,6 +1,6 @@
 {
   "name": "@unabandoned/stream-http",
-  "version": "3.3.2",
+  "version": "3.3.3",
   "description": "Streaming http in the browser",
   "main": "index.js",
   "files": [
