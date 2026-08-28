@@ -1,5 +1,15 @@
 # Changelog
 
+## [3.3.3](https://github.com/unabandoned/stream-http/compare/stream-http-v3.3.2...stream-http-v3.3.3) (2026-08-28)
+
+
+### Dependencies & maintenance
+
+* **deps:** update unabandoned/.github action to v1.0.1 ([#13](https://github.com/unabandoned/stream-http/issues/13)) ([ea72b0b](https://github.com/unabandoned/stream-http/commit/ea72b0bbafefe8d2ec82064fe8199f92ad367429))
+* **deps:** update unabandoned/.github action to v1.0.2 ([#14](https://github.com/unabandoned/stream-http/issues/14)) ([53c1228](https://github.com/unabandoned/stream-http/commit/53c122881c6f1471c18fe580d9e3127173dcf15c))
+* **deps:** update unabandoned/.github action to v1.0.3 ([#15](https://github.com/unabandoned/stream-http/issues/15)) ([2716001](https://github.com/unabandoned/stream-http/commit/2716001ac4f30e3adb609929c4cd52b8a6843e9a))
+* pin reusable workflows to the @unabandoned/.github v1.0.0 release ([#11](https://github.com/unabandoned/stream-http/issues/11)) ([8323a76](https://github.com/unabandoned/stream-http/commit/8323a7661d9a131ac528cd603eaa4d582b0dcd98))
+
 ## [3.3.2](https://github.com/unabandoned/stream-http/compare/stream-http-v3.3.1...stream-http-v3.3.2) (2026-08-14)
 
 
