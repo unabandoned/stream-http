@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.3.5](https://github.com/unabandoned/stream-http/compare/stream-http-v3.3.4...stream-http-v3.3.5) (2026-09-23)
+
+
+### Bug Fixes
+
+* stop dev-only commits from cutting releases ([#22](https://github.com/unabandoned/stream-http/issues/22)) ([dc9369f](https://github.com/unabandoned/stream-http/commit/dc9369f087493dd51dce589db4ca3501275a9914))
+
 ## [3.3.4](https://github.com/unabandoned/stream-http/compare/stream-http-v3.3.3...stream-http-v3.3.4) (2026-09-22)
 
 
