@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.3.6](https://github.com/unabandoned/stream-http/compare/stream-http-v3.3.5...stream-http-v3.3.6) (2026-10-09)
+
+
+### Dependencies & maintenance
+
+* drop the inherits dependency for an in-tree helper ([#28](https://github.com/unabandoned/stream-http/issues/28)) ([9f6baed](https://github.com/unabandoned/stream-http/commit/9f6baed7bd8631a6447be776ba523e1c5a4c57cb))
+
 ## [3.3.5](https://github.com/unabandoned/stream-http/compare/stream-http-v3.3.4...stream-http-v3.3.5) (2026-09-23)
 
 
