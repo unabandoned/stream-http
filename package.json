@@ -29,7 +29,6 @@
     "http-browserify"
   ],
   "dependencies": {
-    "inherits": "^2.0.4",
     "readable-stream": "npm:@unabandoned/readable-stream@^4"
   },
   "devDependencies": {
